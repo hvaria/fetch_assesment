@@ -57,7 +57,7 @@ To evaluate the data quality issues in the provided datasets, follow these steps
 
 
 2. **Prepare the Data**: Place the JSON data files (receipts.json, users.json, brands.json) in a directory named Data.
-3. **Run the Script**: Execute the script.py file to evaluate data quality issues.
+3. **Run the Script**: Execute the script file to evaluate data quality issues.
    ```bash
    python data_quality_check.py
 
