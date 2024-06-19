@@ -97,4 +97,4 @@ Receipts Data: 1119 receipts with userId not in Users dataset.
 Brands Data: 1167 brands with cpg not in Brands dataset.
 
 # Task 4 
-File = SLack_message.docx
+File = Slack_message.docx
