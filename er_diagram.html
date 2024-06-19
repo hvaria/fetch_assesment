@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mermaid Diagram</title>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+</head>
+<body>
+    <h1>Data Warehouse Design</h1>
+    <h2>Introduction</h2>
+    <p>The proposed data warehouse design aims to create an efficient and scalable solution for storing and analyzing receipt, user, and brand data. By utilizing a star schema approach with fact and dimension tables, this design enables fast querying, easy data integration, and support for complex analytics.</p>
+    
+    <h2>Fact Tables</h2>
+    <p>The data warehouse revolves around two main fact tables:</p>
+    <ul>
+        <li><strong>fact_receipts</strong>: This table stores transactional data related to receipts, including key metrics such as total spent, points earned, and purchased item count. It also contains foreign keys to link to relevant dimension tables like dim_users and dim_dates.</li>
+        <li><strong>fact_receipt_items</strong>: This table provides a granular level of detail for each item purchased in a receipt. It includes information like quantity, price, and discount, and links to the fact_receipts table and dimension tables dim_brands and dim_products.</li>
+    </ul>
+
+    <h2>Dimension Tables</h2>
+    <p>The dimension tables provide additional context and attributes for analysis:</p>
+    <ul>
+        <li><strong>dim_users</strong>: Stores user information like state, created date, last login, and active status. It includes effective date ranges to handle slowly changing dimensions.</li>
+        <li><strong>dim_brands</strong>: Contains brand details such as brand code, name, barcode, and top brand flag. It links to the dim_categories and dim_cpg tables.</li>
+        <li><strong>dim_categories</strong>: Stores category information with a self-referencing relationship to handle category hierarchies.</li>
+        <li><strong>dim_cpg</strong>: Provides details about the consumer packaged goods (CPG) companies.</li>
+        <li><strong>dim_products</strong>: Stores product information including name, description, price, and foreign keys to dim_brands and dim_categories.</li>
+        <li><strong>dim_dates</strong>: Acts as a date dimension table to enable easy date-based analysis and aggregation at different time granularities.</li>
+    </ul>
+
+    <h2>Relationships</h2>
+    <p>The fact tables are connected to the dimension tables through foreign key relationships:</p>
+    <ul>
+        <li>fact_receipts links to dim_users and dim_dates</li>
+        <li>fact_receipt_items links to fact_receipts, dim_brands, and dim_products</li>
+        <li>dim_brands links to dim_categories and dim_cpg</li>
+        <li>dim_products links to dim_brands and dim_categories</li>
+        <li>dim_categories has a self-referencing relationship for parent-child hierarchy</li>
+    </ul>
+    <p>This star schema design allows for efficient querying and easy understanding of the data relationships.</p>
+
+    <h2>Benefits</h2>
+    <ul>
+        <li><strong>Improved Decision-Making</strong>: By consolidating data from multiple sources into a single, coherent framework, this design enables informed, data-driven decision making.</li>
+        <li><strong>Better Business Intelligence</strong>: The organized structure facilitates faster reporting, analysis, and trend identification across the organization.</li>
+        <li><strong>Scalability</strong>: The design can accommodate growth in data volume and complexity, ensuring the data warehouse remains future-proof.</li>
+        <li><strong>Flexibility</strong>: The dimensional modeling approach allows for easy addition of new data sources and adaptability to changing business requirements.</li>
+        <li><strong>Enhanced Data Quality</strong>: By integrating and cleansing data from various sources, the data warehouse ensures consistency and reduces errors.</li>
+    </ul>
+
+    <h2>Conclusion</h2>
+    <p>The proposed data warehouse design provides a robust foundation for storing, integrating, and analyzing receipt, user, and brand data. By leveraging a star schema with thoughtfully designed fact and dimension tables, this solution enables efficient querying, comprehensive analysis, and data-driven decision making. With scalability, flexibility, and data quality advantages, this design is well-suited to support the organization's evolving business intelligence and analytics needs.</p>
+
+    <div class="mermaid">
+        erDiagram
+            fact_receipts {
+                string receipt_id PK
+                string user_id FK
+                string purchase_date_id FK
+                decimal total_spent
+                int points_earned
+                string points_awarded_date_id FK
+                int bonus_points_earned
+                string bonus_points_reason
+                int purchased_item_count
+                string status
+            }
+            
+            fact_receipt_items {
+                string item_id PK
+                string receipt_id PK, FK
+                string brand_id FK
+                string product_id FK
+                int quantity
+                decimal price
+                decimal discount
+            }
+            
+            dim_users {
+                string user_id PK
+                string state
+                date created_date
+                timestamp last_login
+                boolean active
+                date effective_from
+                date effective_to
+            }
+            
+            dim_brands {
+                string brand_id PK
+                string brand_code
+                string name
+                string barcode
+                string cpg_id FK
+                string category_id FK
+                boolean top_brand
+                date effective_from
+                date effective_to
+            }
+            
+            dim_categories {
+                string category_id PK
+                string name
+                string code
+                string parent_category_id FK
+            }
+            
+            dim_cpg {
+                string cpg_id PK
+                string name
+            }
+            
+            dim_products {
+                string product_id PK
+                string name
+                string description
+                string brand_id FK
+                string category_id FK
+                decimal price
+            }
+            
+            dim_dates {
+                string date_id PK
+                date full_date
+                string day_of_week
+                string month
+                int quarter
+                int year
+            }
+            
+            fact_receipts ||--o{ dim_users : user_id
+            fact_receipts ||--|| dim_dates : purchase_date_id
+            fact_receipts ||--|| dim_dates : points_awarded_date_id
+            fact_receipts ||--|{ fact_receipt_items : receipt_id
+            fact_receipt_items ||--|| dim_brands : brand_id
+            fact_receipt_items ||--|| dim_products : product_id
+            dim_brands ||--|| dim_categories : category_id
+            dim_brands ||--|| dim_cpg : cpg_id
+            dim_products ||--|| dim_brands : brand_id
+            dim_products ||--|| dim_categories : category_id
+            dim_categories ||--o{ dim_categories : parent_category_id
+    </div>
+
+</body>
+</html>
