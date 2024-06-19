@@ -107,3 +107,39 @@ Let me know if you have any questions or if there's anything else I can help wit
 
 Best,
 Himanshu
+
+
+
+Hey @[Product/Business Leader],
+
+I wanted to give you a quick update on the data quality assessment I've been working on for our upcoming analysis project. I've been digging into the receipts, users, and brands datasets using Python and Pandas, and I've uncovered a few issues that we should tackle before moving forward.
+
+Here's a summary of what I found:
+
+🕳️ Missing Values: All three datasets have some missing information in different columns. For example, the receipts data is missing details about bonus points, purchase details, and totals. We'll need to figure out how to handle these gaps, whether that's filling them in with reasonable estimates or leaving out the incomplete records.
+🔍 Duplicate Records: I spotted a pretty significant number of duplicate records in the receipts (586) and users (475) datasets based on the unique columns. We should come up with a plan for dealing with these duplicates, keeping in mind how it might affect our analysis.
+📅 Inconsistent Date Formats: The date columns in the receipts dataset (finishedDate, pointsAwardedDate, purchaseDate) have different formats. If we standardize these, it'll be much easier to analyze the data across different time periods.
+📈 Potential Outliers: Some of the numeric columns in the receipts data, like purchasedItemCount and totalSpent, have really wide ranges that suggest there might be outliers. We should take a closer look to determine if these are valid data points or errors that need to be fixed.
+🔀 Unexpected Categorical Values: I noticed some unexpected values in the categorical columns. For instance, the role column in the users dataset has 'fetch-staff' in addition to the expected 'consumer' value. We need to clarify what these values mean and decide how to handle them.
+🔗 Referential Integrity Issues: There are some inconsistencies between the datasets that go against referential integrity. Some receipts have userIds that don't exist in the users dataset, and some brands have cpg values that don't match any brand _id. We need to investigate these discrepancies and make sure the relationships between the datasets are valid.
+To resolve these data quality issues, it would be helpful to have more information on:
+
+The expected values and formats for each column
+How to handle missing data (e.g., imputation methods, exclusion criteria)
+The correct relationships between the datasets (e.g., foreign key mappings)
+Business rules for identifying and handling outliers and invalid data
+Additionally, to optimize the data assets we're creating, it would be great to know:
+
+The specific questions we're trying to answer with this data
+The expected volume and growth rate of the data
+Any additional data sources that could enrich our analysis
+Regarding performance and scaling, I think the data volume might increase quite a bit over time. To get ahead of this, we should consider:
+
+Optimizing our data processing scripts for efficiency
+Using tools like Apache Spark for large-scale data processing
+Implementing data partitioning and indexing strategies to improve query performance
+Setting up a data pipeline to handle incremental updates and real-time data ingestion
+Let me know if you have any questions or if there's anything else I can help with. I'm looking forward to discussing these findings with you and the team!
+
+Thanks,
+[Your Name]
