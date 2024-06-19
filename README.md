@@ -63,6 +63,7 @@ To evaluate the data quality issues in the provided datasets, follow these steps
 
    
 Script Content:
+
 Loading Data: Reads the JSON data files into Pandas DataFrames.
 Checking for Missing Values: Identifies columns with missing values in each dataset.
 Detecting Duplicate Records: Counts the number of duplicate records in the receipts and users datasets.
